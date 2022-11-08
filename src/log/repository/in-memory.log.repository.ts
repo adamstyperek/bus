@@ -9,6 +9,7 @@ export class InMemoryLogRepository extends LogRepository {
     super();
   }
   add(log: Log) {
+    console.log('Log: ' + log.toString());
     this.logs.push(log);
   }
 

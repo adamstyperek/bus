@@ -14,4 +14,33 @@ export class Log {
   ) {
     return new Log(createdAt, type, sourceId, userId);
   }
+
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+
+  get type(): string {
+    return this._type;
+  }
+
+  get sourceId(): string {
+    return this._sourceId;
+  }
+
+  get userId(): string {
+    return this._userId;
+  }
+
+  toString(): string {
+    return (
+      'At ' +
+      this.createdAt.toISOString() +
+      ' user: ' +
+      this.userId +
+      ' ' +
+      this.type +
+      ' with Id: ' +
+      this.sourceId
+    );
+  }
 }
