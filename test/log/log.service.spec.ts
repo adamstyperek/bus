@@ -1,5 +1,4 @@
 import { Test } from '@nestjs/testing';
-import { LogModule } from '../../src/log/log.module';
 import { FakeLogRepository } from './fake/fake.log.repository';
 import { LogRepository } from '../../src/log/repository/log.repository';
 import { LogService } from '../../src/log/service/log.service';
@@ -14,7 +13,7 @@ describe('Log service', () => {
       useClass: FakeLogRepository,
     };
     const module = await Test.createTestingModule({
-      imports: [LogModule],
+      imports: [],
       providers: [LogService, LogRepositoryProvider],
     }).compile();
     logService = module.get<LogService>(LogService);
