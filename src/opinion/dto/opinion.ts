@@ -9,7 +9,7 @@ export class Opinion {
     private _finishedAt?: Date,
   ) {}
 
-  public static open(reviewerId: string, reviewerName) {
+  public static open(reviewerId: string, reviewerName: string) {
     return new Opinion(
       new Date(),
       randomUUID(),

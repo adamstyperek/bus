@@ -1,9 +1,9 @@
 import { Opinion } from '../dto/opinion';
 import { Injectable } from '@nestjs/common';
-import { Coordinator } from '../adapters/coordinator/coordinator';
 import { LogOpinionOpenedCommand } from '../commands/log-opinion.opened.command';
 import { LogOpinionFinishedCommand } from '../commands/log-opinion-finished.command';
 import { NotifyOpinionFinishedCoordinatorCommand } from '../commands/notify-opinion-finished-coordinator.command';
+import { Coordinator } from '../../coordinator/services/coordinator';
 
 @Injectable()
 export class OpinionService {

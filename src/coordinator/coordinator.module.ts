@@ -25,13 +25,13 @@ const LogProvider = {
   imports: [NotificationModule, LogModule],
   controllers: [],
   providers: [
-    Coordinator,
     NotificationProvider,
     LogProvider,
     LogOpinionFinishedStrategy,
     LogOpinionOpenedStrategy,
     NotifyOpinionFinishedCoordinatorStrategy,
     ProcessCommandStrategyFactory,
+    Coordinator,
   ],
   exports: [Coordinator],
 })

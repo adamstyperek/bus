@@ -3,8 +3,8 @@ import { Command, CommandType } from '../command/command';
 import { ModuleRef } from '@nestjs/core';
 import { LogOpinionFinishedStrategy } from './log-opinion-finished.strategy';
 import { LogOpinionOpenedStrategy } from './log-opinion-opened.strategy';
-import { NotifyOpinionFinishedCoordinatorCommand } from '../../opinion/commands/notify-opinion-finished-coordinator.command';
 import { ProcessCommandStrategy } from './process.command.strategy';
+import { NotifyOpinionFinishedCoordinatorStrategy } from './notify-opinion-finished-coordinator.strategy';
 
 @Injectable()
 export class ProcessCommandStrategyFactory {
@@ -17,7 +17,7 @@ export class ProcessCommandStrategyFactory {
       case CommandType.LOG_OPINION_OPENED:
         return this.moduleRef.get(LogOpinionOpenedStrategy);
       case CommandType.NOTIFY_OPINION_FINISHED_COORDINATOR:
-        return this.moduleRef.get(NotifyOpinionFinishedCoordinatorCommand);
+        return this.moduleRef.get(NotifyOpinionFinishedCoordinatorStrategy);
       default:
         throw new Error();
     }
