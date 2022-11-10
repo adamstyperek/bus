@@ -1,42 +1,26 @@
 import { Opinion } from '../dto/opinion';
 import { Injectable } from '@nestjs/common';
-import { LogOpinionOpenedCommand } from '../commands/log-opinion.opened.command';
-import { LogOpinionFinishedCommand } from '../commands/log-opinion-finished.command';
-import { NotifyOpinionFinishedCoordinatorCommand } from '../commands/notify-opinion-finished-coordinator.command';
-import { Coordinator } from '../../coordinator/services/coordinator';
+import { OpinionsRepository } from '../repositories/opinions.repository';
+import { EventBus } from '@nestjs/cqrs';
+import { OpinionOpenedEvent } from '../events/opinion-opened.event';
+import { OpinionFinishedEvent } from '../events/opinion-finished.event';
 
 @Injectable()
 export class OpinionService {
-  public constructor(private coordinator: Coordinator) {}
+  public constructor(
+    private repository: OpinionsRepository,
+    private eventBus: EventBus,
+  ) {}
 
-  openOpinionBy(reviewerId: string, reviewerName: string) {
+  async openOpinionBy(reviewerId: string, reviewerName: string) {
     const opinion = Opinion.open(reviewerId, reviewerName);
-    this.coordinator.push(
-      LogOpinionOpenedCommand.create(
-        opinion.openedAt,
-        opinion.reviewerId,
-        opinion.id,
-      ),
-    );
+    await this.repository.save(opinion);
+    this.eventBus.publish(new OpinionOpenedEvent(opinion.id));
   }
 
-  finishOpinionBy(reviewerId: string, reviewerName: string) {
+  async finishOpinionBy(reviewerId: string, reviewerName: string) {
     const opinion = Opinion.open(reviewerId, reviewerName);
-    opinion.finish();
-    this.coordinator.push(
-      LogOpinionFinishedCommand.create(
-        opinion.finishedAt,
-        opinion.reviewerId,
-        opinion.id,
-      ),
-    );
-    this.coordinator.push(
-      NotifyOpinionFinishedCoordinatorCommand.create(
-        opinion.finishedAt,
-        opinion.reviewerName,
-        '2023',
-        'PIT',
-      ),
-    );
+    await this.repository.save(opinion);
+    this.eventBus.publish(new OpinionFinishedEvent(opinion.id));
   }
 }
