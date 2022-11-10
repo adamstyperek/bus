@@ -10,6 +10,9 @@ import { LogOpinionFinishedStrategy } from './strategies/log-opinion-finished.st
 import { LogOpinionOpenedStrategy } from './strategies/log-opinion-opened.strategy';
 import { NotifyOpinionFinishedCoordinatorStrategy } from './strategies/notify-opinion-finished-coordinator.strategy';
 import { ProcessCommandStrategyFactory } from './strategies/process.command.strategy.factory';
+import { BullModule } from '@nestjs/bull';
+import { CommandsProcessor } from './services/commands-processor';
+import { CommandsHandler } from './services/commands-handler';
 
 const NotificationProvider = {
   provide: Notifier,
@@ -22,7 +25,13 @@ const LogProvider = {
 };
 
 @Module({
-  imports: [NotificationModule, LogModule],
+  imports: [
+    NotificationModule,
+    LogModule,
+    BullModule.registerQueue({
+      name: 'messages',
+    }),
+  ],
   controllers: [],
   providers: [
     NotificationProvider,
@@ -32,6 +41,8 @@ const LogProvider = {
     NotifyOpinionFinishedCoordinatorStrategy,
     ProcessCommandStrategyFactory,
     Coordinator,
+    CommandsProcessor,
+    CommandsHandler,
   ],
   exports: [Coordinator],
 })

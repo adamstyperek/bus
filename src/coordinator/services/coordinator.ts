@@ -1,13 +1,15 @@
 import { Command } from '../command/command';
 import { Injectable } from '@nestjs/common';
-import { ProcessCommandStrategyFactory } from '../strategies/process.command.strategy.factory';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class Coordinator {
-  public constructor(private factory: ProcessCommandStrategyFactory) {}
+  public constructor(
+    @InjectQueue('messages') private readonly messagesQueue: Queue,
+  ) {}
 
   public push(command: Command) {
-    const strategy = this.factory.getStrategy(command);
-    strategy.execute(command);
+    this.messagesQueue.add(command.getType(), command).catch((error) => {});
   }
 }

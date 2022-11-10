@@ -6,7 +6,7 @@ import { promises } from 'fs';
 export class FileLogRepository extends LogRepository {
   async add(log: Log) {
     const filePath = resolve(__dirname, '../../../data/log.log');
-    await promises.appendFile(filePath, '\n' + log.toString());
+    await promises.appendFile(filePath, log.toString() + '\n');
   }
 
   async count(): Promise<number> {

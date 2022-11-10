@@ -1,14 +1,18 @@
 import { Command, CommandType } from '../../coordinator/command/command';
 
 export class LogOpinionFinishedCommand implements Command {
-  private constructor(
+  public constructor(
     private _finishedAt: Date,
     private _reviewerId: string,
     private _opinionId: string,
   ) {}
 
-  public static create(openedAt: Date, reviewerId: string, opinionId: string) {
-    return new LogOpinionFinishedCommand(openedAt, reviewerId, opinionId);
+  public static create(
+    finishedAt: Date,
+    reviewerId: string,
+    opinionId: string,
+  ) {
+    return new LogOpinionFinishedCommand(finishedAt, reviewerId, opinionId);
   }
 
   get finishedAt(): Date {

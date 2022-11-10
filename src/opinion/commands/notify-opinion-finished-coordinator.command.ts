@@ -1,7 +1,7 @@
 import { Command, CommandType } from '../../coordinator/command/command';
 
 export class NotifyOpinionFinishedCoordinatorCommand implements Command {
-  private constructor(
+  public constructor(
     private _finishedAt: Date,
     private _reviewerName: string,
     private _year: string,

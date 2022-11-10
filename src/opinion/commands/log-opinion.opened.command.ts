@@ -1,7 +1,7 @@
 import { Command, CommandType } from '../../coordinator/command/command';
 
 export class LogOpinionOpenedCommand implements Command {
-  private constructor(
+  public constructor(
     private _openedAt: Date,
     private _reviewerId: string,
     private _opinionId: string,

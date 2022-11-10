@@ -1,4 +1,3 @@
-import { Coordinator } from '../../src/coordinator/services/coordinator';
 import { Test } from '@nestjs/testing';
 import { LogOpinionFinishedCommand } from '../../src/opinion/commands/log-opinion-finished.command';
 import { LogOpinionFinishedStrategy } from '../../src/coordinator/strategies/log-opinion-finished.strategy';
@@ -11,9 +10,10 @@ import { FakeNotificationAdapter } from './fakes/fake.notification.adapter';
 import { NotifyOpinionFinishedCoordinatorStrategy } from '../../src/coordinator/strategies/notify-opinion-finished-coordinator.strategy';
 import { ProcessCommandStrategyFactory } from '../../src/coordinator/strategies/process.command.strategy.factory';
 import { NotifyOpinionFinishedCoordinatorCommand } from '../../src/opinion/commands/notify-opinion-finished-coordinator.command';
+import { CommandsProcessor } from '../../src/coordinator/services/commands-processor';
 
-describe('coordinator service', () => {
-  let coordinator: Coordinator;
+describe('command processor service', () => {
+  let commandProcessor: CommandsProcessor;
   let logOpinionFinishedStrategy: LogOpinionFinishedStrategy;
   let logOpinionOpenedStrategy: LogOpinionOpenedStrategy;
   let notifyOpinionFinishedCoordinatorStrategy: NotifyOpinionFinishedCoordinatorStrategy;
@@ -34,10 +34,10 @@ describe('coordinator service', () => {
         ProcessCommandStrategyFactory,
         LogProvider,
         NotificationProvider,
-        Coordinator,
+        CommandsProcessor,
       ],
     }).compile();
-    coordinator = module.get<Coordinator>(Coordinator);
+    commandProcessor = module.get<CommandsProcessor>(CommandsProcessor);
     logOpinionFinishedStrategy = module.get<LogOpinionFinishedStrategy>(
       LogOpinionFinishedStrategy,
     );
@@ -56,7 +56,7 @@ describe('coordinator service', () => {
       'opinionId',
     );
     const strategySpy = jest.spyOn(logOpinionFinishedStrategy, 'execute');
-    coordinator.push(command);
+    commandProcessor.process(command);
     expect(strategySpy).toHaveBeenCalledWith(command);
   });
   it('when execute log opinion opened command then LogOpinionOpenedStrategy execute is called', () => {
@@ -66,7 +66,7 @@ describe('coordinator service', () => {
       'opinionId',
     );
     const strategySpy = jest.spyOn(logOpinionOpenedStrategy, 'execute');
-    coordinator.push(command);
+    commandProcessor.process(command);
     expect(strategySpy).toHaveBeenCalledWith(command);
   });
   it('when execute notify opinion finished coordinator command then NotifyOpinionFinishedCoordinator execute is called', () => {
@@ -80,7 +80,7 @@ describe('coordinator service', () => {
       notifyOpinionFinishedCoordinatorStrategy,
       'execute',
     );
-    coordinator.push(command);
+    commandProcessor.process(command);
     expect(strategySpy).toHaveBeenCalledWith(command);
   });
 });
