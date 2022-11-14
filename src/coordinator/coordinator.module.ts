@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { Coordinator } from './services/coordinator';
+import { CommandHandler } from './services/command.handler';
 import { NotificationModule } from '../notification/notification.module';
 import { LogModule } from '../log/log.module';
 import { Notifier } from './adapters/notification/notifier';
@@ -11,8 +11,8 @@ import { LogOpinionOpenedStrategy } from './strategies/log-opinion-opened.strate
 import { NotifyOpinionFinishedCoordinatorStrategy } from './strategies/notify-opinion-finished-coordinator.strategy';
 import { ProcessCommandStrategyFactory } from './strategies/process.command.strategy.factory';
 import { BullModule } from '@nestjs/bull';
+import { Coordinator } from './services/coordinator';
 import { CommandsProcessor } from './services/commands-processor';
-import { CommandsHandler } from './services/commands-handler';
 
 const NotificationProvider = {
   provide: Notifier,
@@ -40,10 +40,10 @@ const LogProvider = {
     LogOpinionOpenedStrategy,
     NotifyOpinionFinishedCoordinatorStrategy,
     ProcessCommandStrategyFactory,
+    CommandHandler,
     Coordinator,
     CommandsProcessor,
-    CommandsHandler,
   ],
-  exports: [Coordinator],
+  exports: [CommandHandler],
 })
 export class CoordinatorModule {}

@@ -8,11 +8,14 @@ export class OpinionController {
 
   @Post('open')
   public async open(@Body() body: OpinionRequestDto): Promise<any> {
-    await this.service.openOpinionBy(body.reviewerId, body.reviewerName);
+    return await this.service.openOpinionBy(body.reviewerId, body.reviewerName);
   }
 
   @Post('finish')
   public async finish(@Body() body: OpinionRequestDto): Promise<any> {
-    await this.service.finishOpinionBy(body.reviewerId, body.reviewerName);
+    return await this.service.finishOpinionBy(
+      body.reviewerId,
+      body.reviewerName,
+    );
   }
 }

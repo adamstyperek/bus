@@ -10,10 +10,10 @@ import { FakeNotificationAdapter } from './fakes/fake.notification.adapter';
 import { NotifyOpinionFinishedCoordinatorStrategy } from '../../src/coordinator/strategies/notify-opinion-finished-coordinator.strategy';
 import { ProcessCommandStrategyFactory } from '../../src/coordinator/strategies/process.command.strategy.factory';
 import { NotifyOpinionFinishedCoordinatorCommand } from '../../src/opinion/commands/notify-opinion-finished-coordinator.command';
-import { CommandsProcessor } from '../../src/coordinator/services/commands-processor';
+import { Coordinator } from '../../src/coordinator/services/coordinator';
 
 describe('command processor service', () => {
-  let commandProcessor: CommandsProcessor;
+  let commandProcessor: Coordinator;
   let logOpinionFinishedStrategy: LogOpinionFinishedStrategy;
   let logOpinionOpenedStrategy: LogOpinionOpenedStrategy;
   let notifyOpinionFinishedCoordinatorStrategy: NotifyOpinionFinishedCoordinatorStrategy;
@@ -34,10 +34,10 @@ describe('command processor service', () => {
         ProcessCommandStrategyFactory,
         LogProvider,
         NotificationProvider,
-        CommandsProcessor,
+        Coordinator,
       ],
     }).compile();
-    commandProcessor = module.get<CommandsProcessor>(CommandsProcessor);
+    commandProcessor = module.get<Coordinator>(Coordinator);
     logOpinionFinishedStrategy = module.get<LogOpinionFinishedStrategy>(
       LogOpinionFinishedStrategy,
     );

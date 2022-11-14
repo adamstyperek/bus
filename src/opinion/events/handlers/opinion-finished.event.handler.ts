@@ -1,9 +1,9 @@
-import { Coordinator } from '../../../coordinator/services/coordinator';
 import { OpinionFinishedEvent } from '../opinion-finished.event';
 import { LogOpinionFinishedCommand } from '../../commands/log-opinion-finished.command';
 import { NotifyOpinionFinishedCoordinatorCommand } from '../../commands/notify-opinion-finished-coordinator.command';
 import { OpinionsRepository } from '../../repositories/opinions.repository';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
+import { Coordinator } from '../../adapters/coordinator/coordinator';
 
 @EventsHandler(OpinionFinishedEvent)
 export class OpinionFinishedEventHandler implements IEventHandler {
